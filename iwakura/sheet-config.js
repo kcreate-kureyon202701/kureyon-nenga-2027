@@ -5,7 +5,7 @@ window.SHEET = {
   id: '1rcrm7m4ALW1q7LJZyrA9jAjusPsUZi6NwkbZARb7cBc', // 入力シートのID（メモ用）
   tab: '岩倉版',
   csv: {
-    '岩倉版': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSD4JtCxVqVOBTAsCOJnPDKLrqrtFCDYC6vL9ImLD9n4e4lC6SqBNEsqu1JJY20jg/pub?single=true&output=csv&gid=1525996329',
-    'HP全体': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSD4JtCxVqVOBTAsCOJnPDKLrqrtFCDYC6vL9ImLD9n4e4lC6SqBNEsqu1JJY20jg/pub?single=true&output=csv&gid=96532923'
+    '岩倉版': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQt5MN-n5Rumm0JXsKrDD1frR9ZJvw3nvdE7nc18PI2ZspdtGv2H02f_rYb-uIVFBESWnl3G4OF3cur/pub?single=true&output=csv&gid=1525996329',
+    'HP全体': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQt5MN-n5Rumm0JXsKrDD1frR9ZJvw3nvdE7nc18PI2ZspdtGv2H02f_rYb-uIVFBESWnl3G4OF3cur/pub?single=true&output=csv&gid=96532923'
   }
 };
