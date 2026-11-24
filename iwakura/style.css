@@ -104,3 +104,9 @@ body {
 .ume-heading { display: flex; align-items: center; justify-content: center; gap: .6em; }
 .ume-heading .line { flex: 0 1 5em; height: 1.5px; background: linear-gradient(90deg, transparent, var(--kin)); }
 .ume-heading .line.r { background: linear-gradient(270deg, transparent, var(--kin)); }
+
+/* スマホだけの改行（PCでは改行しない） */
+.sp-br { display: inline; }
+@media (min-width: 768px) { .sp-br { display: none; } }
+/* スマホで文の途中で折り返すときも、ことばの切れ目で折り返す（対応ブラウザのみ） */
+@media (max-width: 767px) { [data-site="subtitle"], [data-site="lead"] { word-break: auto-phrase; } }

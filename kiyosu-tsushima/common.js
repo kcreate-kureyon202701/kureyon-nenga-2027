@@ -152,7 +152,10 @@ function fillSite() {
   document.querySelectorAll('[data-site]').forEach(function (el) {
     var k = el.getAttribute('data-site');
     if (!S[k]) { el.style.display = 'none'; return; }
-    el.innerHTML = esc(S[k]).replace(/\n/g, '<br>');
+    var h = esc(S[k]).replace(/\n/g, '<br>');
+    // 見出しの下の一文・あいさつ文は、スマホのときだけ「、」のあとで改行（PCはそのまま）
+    if (k === 'subtitle' || k === 'lead') h = h.replace(/、(?!<br>|$)/g, '、<br class="sp-br">');
+    el.innerHTML = h;
   });
 }
 
