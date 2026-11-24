@@ -284,9 +284,15 @@ function nengaLogoSVG(year, title, ribbon) {
 
   // 縦の赤いリボン（右）
   if (ribbon) {
-    var rx = 628, rw = 54, rh = Math.max(200, ribbon.length * 31 + 60);
-    s += '<path d="M' + rx + ' 0 H' + (rx + rw) + ' V' + rh + ' L' + (rx + rw / 2) + ' ' + (rh - 22) + ' L' + rx + ' ' + rh + ' Z" fill="url(#ngRib)"/>' +
-         '<text x="' + (rx + rw / 2) + '" y="24" font-size="27" font-weight="900" fill="#fff" letter-spacing="4" font-family="' + F + '" style="writing-mode:vertical-rl;text-orientation:upright">' + esc(ribbon) + '</text>';
+    // 1文字ずつ縦に置く（スマホで縦書き指定がずれて帯が足りなくなるのを防ぐ）。帯の長さは文字数から計算
+    var rx = 628, rw = 54, FS = 27, STEP = 31, y = 22, rt = '';
+    ribbon.split('').forEach(function (ch) {
+      if (/\s/.test(ch)) { y += STEP / 2; return; }
+      rt += '<text x="' + (rx + rw / 2) + '" y="' + (y + FS * .88).toFixed(1) + '" text-anchor="middle" font-size="' + FS + '" font-weight="900" fill="#fff" font-family="' + F + '">' + esc(ch) + '</text>';
+      y += STEP;
+    });
+    var rh = Math.max(200, Math.round(y + 40));
+    s += '<path d="M' + rx + ' 0 H' + (rx + rw) + ' V' + rh + ' L' + (rx + rw / 2) + ' ' + (rh - 22) + ' L' + rx + ' ' + rh + ' Z" fill="url(#ngRib)"/>' + rt;
   }
 
   return '<svg viewBox="0 0 760 520" class="w-full h-auto overflow-visible" role="img" aria-label="' + esc(year + ' ' + title) + '" xmlns="http://www.w3.org/2000/svg">' + s + '</svg>';
