@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>謹賀新年</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho+B1:wght@500;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.5"></script>
+  <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['"Noto Sans JP"', 'sans-serif'] } } } };</script>
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js"></script>
+  <script src="sheet-config.js"></script>
+  <script src="mizuhiki.js"></script>
+  <script src="common.js"></script>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+  <header class="bg-white/95 sticky top-0 z-50 shadow-sm">
+    <div class="obi"></div>
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+      <a href="index.html" class="text-shu text-sm font-bold hover:opacity-70 transition">‹ 一覧へ戻る</a>
+      <div id="headTitle" class="font-mincho text-sm font-bold text-kin hidden md:block tracking-widest"></div>
+    </div>
+  </header>
+
+  <main id="page" class="max-w-5xl w-full mx-auto px-4 py-10 md:py-14 flex-grow"></main>
+
+  <footer class="seigaiha-red text-white border-t-4 border-[#C9A044]">
+    <div id="footKnot" class="pt-4"></div>
+    <p data-site="footer" class="text-center text-sm text-white/90 pb-6 pt-2 px-4"></p>
+  </footer>
+
+  <script>
+  withData(function () {
+    fillSite();
+    document.getElementById('footKnot').innerHTML = awajiSVG({ set: 'kingin', h: 70, lw: 3.2 });
+    if (IS_PREVIEW) document.querySelectorAll('a[href="index.html"]').forEach(function (a) { a.href = 'index.html?preview=1'; });
+    var S = window.SITE || {};
+    document.getElementById('headTitle').textContent = (S.title || '') + '　' + (S.year || '');
+
+    var id = new URLSearchParams(location.search).get('id');
+    var c = (window.COMPANIES || []).find(function (x) { return String(x.id) === id; });
+    var page = document.getElementById('page');
+
+    function heading(text) {
+      return '<h2 class="ume-heading font-mincho font-extrabold text-2xl md:text-3xl text-center mb-8 tracking-widest"><span class="line"></span>' + umeIcon('w-7 h-7 shrink-0') + '<span>' + esc(text) + '</span>' + umeIcon('w-7 h-7 shrink-0') + '<span class="line r"></span></h2>';
+    }
+
+    if (!c) {
+      page.innerHTML = '<section class="bg-white kin-frame rounded-md p-10 text-center">' +
+        '<p class="font-bold mb-4">お探しのページが見つかりませんでした。</p>' +
+        '<a href="index.html" class="inline-block bg-shu text-white font-bold px-6 py-3 rounded-full">一覧へ戻る</a></section>';
+    } else {
+      document.title = c.companyName + ' - ' + (S.title || '');
+
+      // 新春のお知らせ
+      var news = (c.news || []).map(function (n) {
+        return '<div class="bg-white kin-frame rounded-md p-6">' +
+          '<h3 class="font-mincho font-extrabold text-lg mb-2 flex items-start gap-2"><span class="text-shu">◆</span><span>' + esc(n.title) + '</span></h3>' +
+          '<p class="text-sm text-gray-600 leading-relaxed whitespace-pre-line">' + esc(n.text) + '</p></div>';
+      }).join('');
+
+      // 表（会社情報・営業日）
+      var tables = '';
+      function tableBlock(title, rows) {
+        if (!rows || !rows.length) return '';
+        return '<section><h2 class="font-mincho font-extrabold text-xl mb-4 text-shu tracking-wider">' + esc(title) + '</h2>' +
+          '<div class="bg-white rounded-md overflow-hidden border border-[#E6D3A3]"><table class="w-full text-sm"><tbody>' + tableHtml(rows) + '</tbody></table></div></section>';
+      }
+      // 求人情報 または フリースペース（どちらか一方）
+      function freeBlock(title, text) {
+        if (!text) return '';
+        return '<section><h2 class="font-mincho font-extrabold text-xl mb-4 text-shu tracking-wider">' + esc(title || 'お知らせ') + '</h2>' +
+          '<div class="bg-white kin-frame rounded-md p-6 text-sm leading-loose whitespace-pre-line">' + esc(text) + '</div></section>';
+      }
+      var extra = c.extraType === 'free' ? freeBlock(c.freeTitle, c.freeText) : tableBlock('求人情報', c.recruit);
+      tables = extra + tableBlock('会社情報', c.overview);
+
+      // ボタン（ホームページ・インスタグラム・求人情報）・電話
+      var IG_ICON = '<svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
+      function btn(href, label, cls, icon) {
+        return '<a href="' + esc(href) + '" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 w-full md:w-auto text-white font-bold text-lg px-10 py-4 rounded-full shadow-lg transition hover:opacity-90 ' + cls + '">' + (icon || '') + esc(label) + '</a>';
+      }
+      var btns = (c.url ? btn(c.url, S.linkButton || 'ホームページを見る', 'bg-shu') : '') +
+        (c.instagram ? btn(c.instagram, 'Instagramを見る', 'btn-insta', IG_ICON) : '') +
+        (c.recruitUrl ? btn(c.recruitUrl, '求人情報はこちら', 'btn-recruit') : '');
+      var links = '';
+      if (btns || c.tel) {
+        links = '<section class="text-center flex flex-col items-center gap-6">' +
+          (btns ? '<div class="flex flex-col md:flex-row flex-wrap items-stretch justify-center gap-4 w-full max-w-sm md:max-w-none">' + btns + '</div>' : '') +
+          (c.tel ? '<a href="tel:' + esc(c.tel.replace(/[^0-9+]/g, '')) + '" class="font-mincho text-2xl md:text-3xl font-extrabold text-shu">☎ ' + esc(c.tel) + '</a>' : '') +
+          '</section>';
+      }
+
+      var sign = (c.staffRole || c.staffName)
+        ? '<p class="font-mincho font-bold mt-8 md:mt-0 md:mr-10 text-right md:text-left">' + esc(c.companyName) + '<br>' + esc(c.staffRole) + '　' + esc(c.staffName) + '</p>'
+        : '<p class="font-mincho font-bold mt-8 md:mt-0 md:mr-10 text-right md:text-left">' + esc(c.companyName) + '</p>';
+
+      page.innerHTML =
+        // 社名・ひとこと
+        '<div class="-mx-4 md:mx-0 mb-6">' + noshiHtml('lg') + '</div>' +
+        '<section class="text-center mb-8">' +
+          '<div class="mb-3"><span class="hanko">' + esc(c.category) + '</span></div>' +
+          '<h1 class="font-mincho font-extrabold text-3xl md:text-5xl tracking-wider leading-tight mb-3">' + esc(c.companyName) + '</h1>' +
+          '<p class="font-mincho font-bold text-shu text-lg md:text-2xl">' + esc(c.catchphrase) + '</p>' +
+        '</section>' +
+        // 写真
+        '<section class="bg-white kin-frame rounded-md p-[6px] mb-14">' +
+          '<div class="h-64 md:h-[26rem] relative rounded-sm overflow-hidden">' + photoHtml(c.photo, c.companyName) + staffHtml(c, 'lg') + '</div>' +
+        '</section>' +
+        // あいさつ文
+        '<section class="mb-16">' + heading('新年のごあいさつ') +
+          '<div class="bg-white kin-frame rounded-md overflow-hidden">' +
+          '<div class="mx-[6px] mt-[6px] bg-[#FFF7E8]">' + noshiHtml() + '</div>' +
+          '<div class="px-6 py-8 md:p-12">' +
+            '<div class="tategaki-box font-mincho text-[16px] md:text-[18px] font-medium">' +
+              '<p class="whitespace-pre-line">' + esc(c.message) + '</p>' + sign +
+            '</div>' +
+          '</div></div>' +
+        '</section>' +
+        (news ? '<section class="mb-16">' + heading('新春のお知らせ') +
+          '<div class="grid grid-cols-1 md:grid-cols-3 gap-6">' + news + '</div></section>' : '') +
+        (tables ? '<div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">' + tables + '</div>' : '') +
+        links;
+    }
+  });
+  </script>
+</body>
+</html>

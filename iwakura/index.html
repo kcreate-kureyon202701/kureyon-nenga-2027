@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>謹賀新年</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@800&family=Noto+Sans+JP:wght@400;500;700;900&family=Shippori+Mincho+B1:wght@500;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.5"></script>
+  <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['"Noto Sans JP"', 'sans-serif'] } } } };</script>
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js"></script>
+  <script src="sheet-config.js"></script>
+  <script src="mizuhiki.js"></script>
+  <script src="common.js"></script>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+  <div class="obi"></div>
+  <header class="hero relative overflow-hidden text-center px-4 pb-16 md:pb-20">
+    <div class="kinpaku"></div>
+
+    <!-- 水引：波のようにゆれる紐＋真ん中の梅結び -->
+    <div id="heroMizuhiki" class="relative -mx-4 pt-3 md:pt-5 mb-6 md:mb-8"></div>
+
+    <div class="relative">
+      <span data-site="badge" class="inline-block bg-shu text-white font-bold px-5 py-1.5 rounded-sm text-xs md:text-sm tracking-wider mb-8 shadow-md ring-1 ring-[#E6C46B] ring-offset-2 ring-offset-[#FFF7E8]"></span>
+      <h1 id="title" class="max-w-[760px] mx-auto mb-6 md:mb-8"></h1>
+      <p data-site="subtitle" class="font-mincho font-bold text-xl md:text-2xl mb-4"></p>
+      <p data-site="lead" class="text-sm md:text-base text-gray-700 leading-loose"></p>
+    </div>
+  </header>
+  <div class="seigaiha-red h-8 md:h-10 border-y-2 border-[#C9A044] mb-14"></div>
+
+  <main class="max-w-[1200px] w-full mx-auto px-4 pb-20 flex-grow">
+    <div id="list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+  </main>
+
+  <footer class="seigaiha-red text-white border-t-4 border-[#C9A044]">
+    <div id="footKnot" class="pt-4"></div>
+    <p data-site="footer" class="text-center text-sm text-white/90 pb-6 pt-2 px-4"></p>
+  </footer>
+
+  <script>
+  withData(function () {
+    fillSite();
+    document.getElementById('heroMizuhiki').innerHTML = awajiSVG({ cls: 'h-[130px] md:h-[230px]', wave: true });
+    document.getElementById('footKnot').innerHTML = awajiSVG({ set: 'kingin', h: 70, lw: 3.2 });
+    var S = window.SITE || {};
+    // 「謹賀新年」ロゴ（年・題字・和暦は入力画面の内容から作る。和暦は右の赤いリボンに入る）
+    var t = S.title || '';
+    document.getElementById('title').innerHTML = nengaLogoSVG(S.year, t, S.yearJa);
+    document.title = t + ' ' + (S.subtitle || '');
+
+    document.getElementById('list').innerHTML = (window.COMPANIES || []).map(function (c) {
+      return '<article class="bg-white kin-frame card-hana rounded-md overflow-hidden group hover:-translate-y-1 transition-all duration-300 flex flex-col">' +
+        '<a href="company.html?id=' + encodeURIComponent(c.id) + pv() + '" class="flex flex-col h-full">' +
+          '<div class="mx-[6px] mt-[6px] pt-2 bg-[#FFF7E8]">' + noshiHtml() + '</div>' +
+          '<div class="h-56 md:h-60 relative overflow-hidden mx-[6px] mb-0 rounded-sm">' +
+            photoHtml(c.photo, c.companyName, 'group-hover:scale-105 transition-transform duration-700') +
+            staffHtml(c) +
+          '</div>' +
+          '<div class="flex flex-col flex-grow px-6 pt-5 pb-6">' +
+            '<div class="mb-2"><span class="hanko">' + esc(c.category) + '</span></div>' +
+            '<h3 class="font-mincho font-extrabold text-xl md:text-2xl leading-snug mb-2">' + esc(c.companyName) + '</h3>' +
+            '<p class="font-mincho font-bold text-shu text-[15px] md:text-base leading-relaxed mb-4">' + esc(c.catchphrase) + '</p>' +
+            '<p class="text-[13px] text-gray-600 leading-relaxed flex-grow">' + esc(shortText(c.message, 80)) + '</p>' +
+            '<p class="text-right text-sm font-bold text-kin mt-4 group-hover:text-[#8E1B20] transition-colors">ごあいさつを読む ›</p>' +
+          '</div>' +
+        '</a></article>';
+    }).join('');
+  });
+  </script>
+</body>
+</html>

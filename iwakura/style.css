@@ -1,0 +1,106 @@
+/* 正月風デザインの共通スタイル（ふだんは触らなくてOK） */
+:root {
+  --shu: #B7282E;      /* 朱色 */
+  --shu-dark: #8E1B20;
+  --kin: #B08D3C;      /* 金色 */
+  --kin-light: #E9D9A6;
+  --washi: #FAF6EE;    /* 和紙色 */
+  --sumi: #2B2522;     /* 墨色 */
+}
+body {
+  background-color: var(--washi);
+  /* 青海波（せいがいは）の柄をうっすら */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Cg fill='none' stroke='%23B08D3C' stroke-opacity='0.13' stroke-width='1'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='12'/%3E%3Ccircle cx='0' cy='15' r='28'/%3E%3Ccircle cx='0' cy='15' r='20'/%3E%3Ccircle cx='0' cy='15' r='12'/%3E%3Ccircle cx='60' cy='15' r='28'/%3E%3Ccircle cx='60' cy='15' r='20'/%3E%3Ccircle cx='60' cy='15' r='12'/%3E%3C/g%3E%3C/svg%3E");
+  color: var(--sumi);
+}
+.font-mincho { font-family: 'Shippori Mincho B1', 'Yu Mincho', serif; }
+.text-shu { color: var(--shu); }
+.text-kin { color: var(--kin); }
+.bg-shu { background-color: var(--shu); }
+
+/* 金の二重線の枠 */
+.kin-frame { border: 1px solid var(--kin); box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px var(--kin-light); }
+
+/* 上下の紅白・金の帯 */
+.obi { height: 10px; background:
+  linear-gradient(var(--kin), var(--kin)) top / 100% 2px no-repeat,
+  linear-gradient(var(--kin), var(--kin)) bottom / 100% 2px no-repeat,
+  var(--shu); }
+
+/* 初日の出（見出しの後ろの赤い丸） */
+.hinode { position: relative; display: inline-block; }
+.hinode::before { content: ''; position: absolute; left: 50%; top: 50%; width: 1.9em; height: 1.9em;
+  transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, #E2474D 0%, var(--shu) 70%); opacity: .95; z-index: 0; }
+.hinode > span { position: relative; z-index: 1; }
+
+/* 見出しの両脇の飾り線 */
+.kazari { display: flex; align-items: center; justify-content: center; gap: .8em; }
+.kazari::before, .kazari::after { content: ''; flex: 0 1 4em; height: 1px; background: linear-gradient(90deg, transparent, var(--kin), transparent); }
+
+/* カテゴリーの判子風タグ */
+.hanko { display: inline-block; border: 1.5px solid var(--shu); color: var(--shu); background: #fff; font-weight: 700;
+  font-size: 11px; padding: 1px 8px; border-radius: 3px; letter-spacing: .08em; }
+
+/* あいさつ文：パソコンでは縦書き、スマホでは横書き */
+.tategaki-box { line-height: 2.1; }
+@media (min-width: 768px) {
+  .tategaki-box { writing-mode: vertical-rl; height: 30rem; overflow-x: auto; line-height: 2.3; letter-spacing: .08em; margin: 0 auto; width: fit-content; max-width: 100%; }
+}
+
+/* 仮画像（写真が空のとき） */
+.placeholder { background:
+  radial-gradient(circle at 50% 45%, #E2474D 0 18%, transparent 18.5%),
+  linear-gradient(160deg, #F6EBD2 0%, #EAD7A8 100%); }
+
+/* ===== 華やか飾り（水引・金箔・霞・梅） ===== */
+
+/* 水引の紐の束（紅3本・金1本・白3本） */
+.cord-band { height: 12px; filter: drop-shadow(0 1px 1px rgba(80,20,10,.25));
+  background: linear-gradient(to bottom,
+    #7A1A1F 0, #D23B41 .7px, #B7282E 1.4px, #7A1A1F 1.7px,
+    #D23B41 2px, #B7282E 3px, #7A1A1F 3.4px,
+    #D23B41 3.7px, #B7282E 4.6px, #7A1A1F 5px,
+    #F3D88A 5.3px, #C9A044 6.4px, #8C6B22 6.8px,
+    #FFFFFF 7px, #EFE6D6 8px, #C9B9A0 8.3px,
+    #FFFFFF 8.6px, #EFE6D6 9.6px, #C9B9A0 9.9px,
+    #FFFFFF 10.2px, #EFE6D6 11.4px, #B9A88E 12px); }
+
+/* 金箔をちらした背景 */
+.kinpaku { position: absolute; inset: 0; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='220'%3E%3Cg fill='%23D4AF52'%3E%3Cpolygon points='20,30 34,26 30,40 18,38' opacity='.55'/%3E%3Cpolygon points='120,12 128,16 122,24 114,20' opacity='.45'/%3E%3Cpolygon points='210,50 230,46 226,64 206,62' opacity='.4'/%3E%3Cpolygon points='70,110 80,106 82,118 70,120' opacity='.5'/%3E%3Cpolygon points='170,140 186,138 182,152 168,150' opacity='.45'/%3E%3Cpolygon points='240,180 248,182 244,190 236,188' opacity='.55'/%3E%3Cpolygon points='30,180 46,176 44,194 28,192' opacity='.35'/%3E%3Cpolygon points='140,80 146,82 143,88 137,86' opacity='.6'/%3E%3C/g%3E%3C/svg%3E"); }
+
+/* 霞（金のたなびく雲） */
+.kasumi { position: absolute; pointer-events: none; height: 22px; border-radius: 999px; opacity: .9; }
+.kasumi::after { content: ''; position: absolute; height: 22px; border-radius: 999px; width: 70%; top: 30px; background: inherit; }
+.kasumi-l { left: -6%; width: 34%; top: 46%; background: linear-gradient(90deg, rgba(214,180,96,0), rgba(214,180,96,.35)); }
+.kasumi-l::after { left: 18%; }
+.kasumi-r { right: -6%; width: 34%; top: 30%; background: linear-gradient(270deg, rgba(214,180,96,0), rgba(214,180,96,.35)); }
+.kasumi-r::after { right: 18%; }
+
+/* トップの大見出しエリア */
+.hero { background:
+  radial-gradient(ellipse 70% 60% at 50% 35%, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 70%),
+  linear-gradient(180deg, #FFF7E8 0%, var(--washi) 100%); }
+.ume-tl { position: absolute; left: -10px; top: 125px; width: 210px; transform: scaleX(1); }
+.ume-br { position: absolute; right: -10px; bottom: 10px; width: 230px; transform: scale(-1, -1); }
+@media (min-width: 768px) { .ume-tl { width: 300px; } .ume-br { width: 320px; } }
+@media (max-width: 767px) { .ume-tl { top: 150px; width: 120px; opacity: .6; } .ume-br { width: 130px; bottom: 0; opacity: .6; } }
+
+/* 紅地に金の青海波（帯・フッター） */
+.seigaiha-red { background-color: var(--shu);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'%3E%3Cg fill='none' stroke='%23E6C46B' stroke-opacity='0.55' stroke-width='1.1'%3E%3Ccircle cx='20' cy='20' r='18'/%3E%3Ccircle cx='20' cy='20' r='12.5'/%3E%3Ccircle cx='20' cy='20' r='7'/%3E%3Ccircle cx='0' cy='10' r='18'/%3E%3Ccircle cx='0' cy='10' r='12.5'/%3E%3Ccircle cx='0' cy='10' r='7'/%3E%3Ccircle cx='40' cy='10' r='18'/%3E%3Ccircle cx='40' cy='10' r='12.5'/%3E%3Ccircle cx='40' cy='10' r='7'/%3E%3C/g%3E%3C/svg%3E"); }
+
+/* 見出しの金文字 */
+.kin-text { background: linear-gradient(180deg, #D9B25A 0%, #A57C26 55%, #D9B25A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* カードにふんわり金の光 */
+.card-hana:hover { box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px var(--kin-light), 0 18px 40px -12px rgba(176,141,60,.55); }
+
+/* ごあいさつページのボタン */
+.btn-insta { background: linear-gradient(45deg, #F09433 0%, #E6683C 25%, #DC2743 50%, #CC2366 75%, #BC1888 100%); }
+.btn-recruit { background: linear-gradient(180deg, #C9A044 0%, #9C7A2C 100%); }
+
+/* 見出しの両脇：金の線＋梅 */
+.ume-heading { display: flex; align-items: center; justify-content: center; gap: .6em; }
+.ume-heading .line { flex: 0 1 5em; height: 1.5px; background: linear-gradient(90deg, transparent, var(--kin)); }
+.ume-heading .line.r { background: linear-gradient(270deg, transparent, var(--kin)); }
