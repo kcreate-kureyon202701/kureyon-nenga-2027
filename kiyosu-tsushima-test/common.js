@@ -392,7 +392,7 @@ function footerHtml() {
   var S = window.SITE || {}, url = (window.SHEET || {}).kureyonUrl || '';
   return '<div class="foot-inner">' +
     '<div class="foot-knot">' + awajiSVG({ set: 'kingin', h: 70, lw: 3.2 }) + '</div>' +
-    (S.badge ? '<p class="foot-badge font-mincho">' + esc(S.badge) + '</p>' : '') +
+    (S.badge ? '<p class="foot-badge">' + esc(S.badge) + '</p>' : '') +
     (url ? '<a class="foot-link" href="' + esc(url) + '" target="_blank" rel="noopener">情報誌くれよん のホームページへ ›</a>' : '') +
     (S.footer ? '<p class="foot-copy">' + esc(S.footer) + '</p>' : '') +
     '</div>';
