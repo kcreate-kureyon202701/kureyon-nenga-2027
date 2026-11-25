@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>謹賀新年 地元の企業・お店から、新年のごあいさつ｜情報誌くれよん 清須・津島版</title>
+  <meta name="description" content="地元の企業・お店から、新年のごあいさつ。情報誌くれよん 清須・津島版 1月号連動企画">
+  <meta name="robots" content="noindex, nofollow"><!-- 確認用（検索に出さない） -->
+  <meta name="theme-color" content="#B7282E">
+  <!-- LINE・SNSで送ったときの表示（画像のURLは公開先に合わせる） -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="情報誌くれよん">
+  <meta property="og:title" content="謹賀新年 地元の企業・お店から、新年のごあいさつ">
+  <meta property="og:description" content="情報誌くれよん 清須・津島版 1月号連動企画">
+  <meta property="og:url" content="https://kcreate-kureyon202701.github.io/kureyon-nenga-2027/kiyosu-tsushima-test/">
+  <meta property="og:image" content="https://kcreate-kureyon202701.github.io/kureyon-nenga-2027/kiyosu-tsushima-test/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://docs.google.com" crossorigin>
+  <link rel="stylesheet" href="style.css?v=20261125b">
+  <script>
+    // 開いた瞬間の動きは、この端末で最初に開いたときだけ（2回目・「動きを減らす」設定ならすぐ表示）
+    (function (h) {
+      h.classList.add('js');
+      try {
+        var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!calm && !sessionStorage.getItem('nenga-intro')) { h.classList.add('intro'); sessionStorage.setItem('nenga-intro', '1'); }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+  <script src="sheet-config.js?v=20261125b"></script>
+  <script src="data.js?v=20261125b"></script>
+  <script src="mizuhiki.js?v=20261125b"></script>
+  <script src="common.js?v=20261125b"></script>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+  <div class="obi"></div>
+  <header class="hero relative overflow-hidden text-center px-4 pb-10 md:pb-16">
+    <div class="kinpaku" aria-hidden="true"></div>
+    <!-- 金の紙吹雪（ゆっくり舞い落ちる） -->
+    <div class="confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+    <!-- 水引：左右から紐が伸びて、真ん中で梅結び -->
+    <div id="heroMizuhiki" class="relative -mx-4 pt-3 md:pt-5 mb-6 md:mb-8 h-[130px] md:h-[230px]"></div>
+
+    <div class="relative">
+      <span data-site="badge" class="hero-badge inline-block bg-shu text-white font-bold px-5 py-1.5 rounded-sm text-xs md:text-sm tracking-wider mb-8 shadow-md"></span>
+      <h1 id="title" class="max-w-[760px] mx-auto mb-6 md:mb-8 aspect-[760/520]"></h1>
+      <p data-site="subtitle" class="font-mincho font-bold text-xl md:text-2xl mb-4 tracking-wider"></p>
+      <p data-site="lead" class="text-base text-gray-700 leading-loose"></p>
+      <a href="#list-top" class="scroll-hint intro-up">
+        <span>ごあいさつを見る</span>
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 4v15m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </header>
+  <div class="seigaiha-red h-8 md:h-10 border-y-2 border-kin"></div>
+
+  <main id="list-top" class="max-w-[1200px] w-full mx-auto px-4 pt-10 md:pt-14 pb-20 flex-grow">
+    <nav id="filters" class="filters" aria-label="業種でしぼりこむ" hidden></nav>
+    <div id="list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"></div>
+  </main>
+
+  <footer id="foot" hidden class="seigaiha-red text-white border-t-4 border-kin"></footer>
+
+  <script>
+  (function () {
+    var html = document.documentElement;
+    var listEl = document.getElementById('list');
+
+    // ---- トップの大見出し（データを待たずにすぐ出す） ----
+    var cached = readCache();
+    if (cached && cached.site) window.SITE = Object.assign({}, window.SITE || {}, cached.site);
+    var heroSig = '';
+    function renderHero() {
+      var S = window.SITE || {}, sig = [S.year, S.title, S.yearJa].join('|');
+      fillSite();
+      document.title = (S.title || '') + ' ' + (S.subtitle || '');
+      if (sig === heroSig) return;
+      heroSig = sig;
+      document.getElementById('title').innerHTML = nengaLogoSVG(S.year, S.title || '', S.yearJa);
+    }
+    document.getElementById('heroMizuhiki').innerHTML = awajiSVG({ cls: 'h-full', wave: true });
+    renderHero();
+    document.getElementById('foot').innerHTML = footerHtml();
+    if (!cached) listEl.innerHTML = '<div class="col-span-full">' + loaderHtml() + '</div>';
+
+    // ---- 開いた瞬間の動き（約4秒）。画面を触ったら、すぐ終わりの状態に ----
+    if (html.classList.contains('intro')) {
+      var endIntro = function () {
+        html.classList.add('intro-skip'); html.classList.remove('intro');
+        ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (t) { removeEventListener(t, endIntro, true); });
+      };
+      ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (t) { addEventListener(t, endIntro, { capture: true, passive: true }); });
+    }
+
+    // ---- 紙吹雪は、トップが見えている間だけ動かす ----
+    var conf = document.querySelector('.confetti');
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { conf.classList.toggle('paused', !e[0].isIntersecting); }).observe(document.querySelector('.hero'));
+
+    // ---- 会社のカード ----
+    var filter = 'すべて';
+    function cardHtml(c) {
+      return '<article class="card card-rv" data-cat="' + esc(c.category) + '">' +
+        '<a href="company.html?id=' + encodeURIComponent(c.id) + pv() + '" class="card-link" data-id="' + esc(c.id) + '">' +
+          '<div class="card-noshi">' + noshiHtml() + '</div>' +
+          '<div class="card-photo">' + photoHtml(c.photo, c.companyName) + staffHtml(c) + '</div>' +
+          '<div class="flex flex-col flex-grow px-6 pt-5 pb-6">' +
+            (c.category ? '<div class="mb-2"><span class="hanko">' + esc(c.category) + '</span></div>' : '') +
+            '<h2 class="font-mincho font-extrabold text-xl md:text-2xl leading-snug mb-2 tracking-wide">' + esc(c.companyName) + '</h2>' +
+            (c.catchphrase ? '<p class="font-mincho font-bold text-shu text-base leading-relaxed mb-3">' + esc(c.catchphrase) + '</p>' : '') +
+            '<p class="text-base text-gray-700 leading-relaxed flex-grow">' + esc(shortText(c.message, 60)) + '</p>' +
+            '<p class="card-more">ごあいさつを読む <span aria-hidden="true">›</span></p>' +
+          '</div>' +
+        '</a></article>';
+    }
+    function renderFilters(list) {
+      var nav = document.getElementById('filters'), cats = [];
+      list.forEach(function (c) { if (c.category && cats.indexOf(c.category) < 0) cats.push(c.category); });
+      if (cats.length < 2) { nav.hidden = true; filter = 'すべて'; return; }
+      if (filter !== 'すべて' && cats.indexOf(filter) < 0) filter = 'すべて';
+      nav.hidden = false;
+      nav.innerHTML = ['すべて'].concat(cats).map(function (k) {
+        var n = k === 'すべて' ? list.length : list.filter(function (c) { return c.category === k; }).length;
+        return '<button type="button" class="chip" aria-pressed="' + (k === filter) + '" data-cat="' + esc(k) + '">' + esc(k) + '<span class="chip-n">' + n + '</span></button>';
+      }).join('');
+    }
+    function applyFilter(animate) {
+      var i = 0;
+      [].forEach.call(listEl.querySelectorAll('.card'), function (el) {
+        var show = filter === 'すべて' || el.getAttribute('data-cat') === filter;
+        el.hidden = !show;
+        if (show && animate && !REDUCED) {
+          el.classList.remove('is-in');
+          el.style.setProperty('--d', Math.min(i++, 8) * 60 + 'ms');
+          void el.offsetWidth; // いったん最初の状態にもどしてから
+          el.classList.add('is-in');
+        }
+      });
+    }
+    document.getElementById('filters').addEventListener('click', function (e) {
+      var b = e.target.closest('.chip'); if (!b) return;
+      filter = b.getAttribute('data-cat');
+      [].forEach.call(this.querySelectorAll('.chip'), function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      applyFilter(true);
+    });
+
+    // カードの写真が、そのまま会社ページの写真につながって見えるように（対応ブラウザのみ）
+    function markPhoto(id) {
+      [].forEach.call(listEl.querySelectorAll('.card-photo img'), function (img) { img.style.viewTransitionName = ''; });
+      var a = listEl.querySelector('.card-link[data-id="' + id + '"] .card-photo img');
+      if (a) a.style.viewTransitionName = 'photo';
+    }
+    listEl.addEventListener('click', function (e) {
+      var a = e.target.closest('.card-link'); if (!a) return;
+      markPhoto(a.getAttribute('data-id'));
+      try { sessionStorage.setItem('nenga-last', a.getAttribute('data-id')); } catch (x) {}
+    });
+
+    function renderList() {
+      var list = window.COMPANIES || [];
+      renderFilters(list);
+      listEl.innerHTML = list.map(cardHtml).join('');
+      applyFilter(false);
+      try { var last = sessionStorage.getItem('nenga-last'); if (last) markPhoto(last); } catch (x) {}
+      revealOnScroll(listEl.querySelectorAll('.card'), 110);
+      document.getElementById('foot').hidden = false; // 一覧が出てからフッターを出す（下の部分がガタッと動かないように）
+    }
+
+    withData(function () {
+      renderHero();
+      document.getElementById('foot').innerHTML = footerHtml();
+      renderList();
+    });
+  })();
+  </script>
+</body>
+</html>
